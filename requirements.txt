@@ -1,0 +1,11 @@
+fastapi
+uvicorn
+streamlit
+pandas
+numpy
+scikit-learn
+lightgbm
+dice-ml
+joblib
+requests
+pydantic
