@@ -1,6 +1,13 @@
 import streamlit as st
 import pandas as pd
 import requests
+import os
+import streamlit as st
+import pandas as pd
+import requests
+
+# Reads API_URL from Render environment variables (falls back to localhost on your PC)
+API_URL = os.getenv("API_URL", "http://127.0.0.1:8000")
 
 st.set_page_config(page_title="Prescriptive CDSS | Counterfactual AI", layout="wide")
 
@@ -66,7 +73,11 @@ if st.button("🚀 Generate Counterfactual Treatment Plans", type="primary"):
     
     with st.spinner("Computing constrained counterfactual pathways via DiCE..."):
         try:
-            response = requests.post("http://127.0.0.1:8000/generate_treatment_plans", json=payload)
+            response = requests.post(
+            f"{API_URL}/generate_treatment_plans", 
+            json=payload, 
+            timeout=90  # Prevents timeout error when Render free tier wakes up from sleep
+            )
             if response.status_code == 200:
                 data = response.json()
                 base_risk = data["baseline_risk"]
